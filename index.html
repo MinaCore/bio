@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shawty bio</title>
+  <style>
+/* ─── FONTS ─────────────────────────────────────────────── */
+@font-face {
+  font-family: 'VoidTech';
+  src: url('void-tech.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DMMono';
+  src: url('DMMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DMMonoBold';
+  src: url('DMMono-Regular.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* ─── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; }
+body {
+  font-family: 'DMMono', monospace;
+  font-size: 1rem;
+  background-color: #000;
+  color: #fff;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (min-width: 601px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
+/* ─── CSS TOKENS (Default / Brand Theme) ────────────────── */
+:root {
+  --c-heading:       255, 255, 255;
+  --c-body:          255, 255, 255;
+  --c-secondary:     128, 128, 128;
+  --c-border-root:   255, 255, 255;
+  --c-border-inner:  130, 130, 130;
+  --c-border-btn:    255, 255, 255;
+  --c-border-window:  51,  51,  51;
+  --c-separator:     255, 255, 255;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────── */
+@media (pointer: fine) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #000; border: 1px solid #fff; }
+  ::-webkit-scrollbar-thumb { background: #fff; }
+  ::-webkit-scrollbar-thumb:hover { background: #ccc; }
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+@keyframes vault-item {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes dialog-enter {
+  from { transform: translateY(18px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes dialog-exit {
+  from { transform: translateY(0);    opacity: 1; }
+  to   { transform: translateY(18px); opacity: 0; }
+}
+@keyframes sl-box {
+  from { transform: scaleY(0.04); opacity: 0; }
+  to   { transform: scaleY(1);    opacity: 1; }
+}
+@keyframes sl-c {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes toast-enter {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+@keyframes toast-exit {
+  from { transform: translateY(0);     opacity: 1; }
+  to   { transform: translateY(-100%); opacity: 0; }
+}
+@keyframes ctx-menu-enter {
+  from { transform: scale(0.97) translateY(-4px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+@keyframes void-blink {
+  0%   { opacity: 0;    transform: translateY(6px); }
+  30%  { opacity: 0.18; transform: translateY(4px); }
+  60%  { opacity: 0;    transform: translateY(3px); }
+  100% { opacity: 1;    transform: translateY(0); }
+}
+@keyframes pin-exit-up {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+@keyframes pin-enter-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bufferingPulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.9; }
+}
+@keyframes text-editor-enter {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes text-editor-exit {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+.text-editor-enter { animation: text-editor-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes mobile-panel-enter {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes upload-toast-enter {
+  from { transform: translateY(-110%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+@keyframes tb-btn-enter {
+  from { transform: translateX(-18px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+@keyframes quicklink-copy-enter {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes panel-content-enter {
+  from { transform: translateX(12px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ─── LAYOUT ─────────────────────────────────────────────── */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 2rem) 6rem;
+}
+.section {
+  margin-bottom: 4rem;
+}
+.section-title {
+  font-family: 'DMMono', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: rgb(var(--c-heading));
+  margin: 1.5rem;
+  margin-bottom: 0.15rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid #fff;
+}
+.section-sub {
+  font-family: 'DMMono', monospace;
+  font-size: 0.75rem;
+  color: rgb(var(--c-secondary));
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.demo-col {
+  flex: 1;
+  min-width: 280px;
+}
+.demo-label {
+  font-size: 0.72rem;
+  color: rgb(var(--c-secondary));
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.demo-value {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.35rem;
+  letter-spacing: 0.04em;
+}
+
+/* ─── PAGE HEADER ────────────────────────────────────────── */
+.page-header {
+  padding: 1.5rem 0 1.5rem;
+  border-bottom: 2px solid #fff;
+  margin-bottom: 3rem;
+}
+.page-header-logo {
+  font-family: 'VoidTech', monospace;
+  font-size: clamp(1rem, 5vw, 2rem);
+  font-weight: 50;
+  letter-spacing: 0.1em;
+  color: rgb(var(--c-heading));
+}
+.page-header-sub {
+  font-size: 0.75rem;
+  color: rgb(var(--c-secondary));
+  letter-spacing: 0.08em;
+  margin-top: 0.4rem;
+}
+
+/* ─── TYPOGRAPHY DEMOS ───────────────────────────────────── */
+.type-sample {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #222;
+}
+.type-sample:last-child { border-bottom: none; }
+
+/* ─── COLOR SWATCHES ─────────────────────────────────────── */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+}
+.swatch-box {
+  height: 48px;
+  border: 1px solid #333;
+  margin-bottom: 0.5rem;
+}
+.swatch-name {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgb(var(--c-body));
+}
+.swatch-hex {
+  font-size: 0.68rem;
+  color: rgb(var(--c-secondary));
+  margin-top: 0.15rem;
+}
+
+/* ─── DASHED BORDER (Pattern A) ──────────────────────────── */
+.void-dashed {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  background-image:
+    linear-gradient(90deg, #fff 0, #fff 14px, transparent 14px, transparent 19px),
+    linear-gradient(90deg, #fff 0, #fff 14px, transparent 14px, transparent 19px),
+    linear-gradient(#fff, #fff),
+    linear-gradient(#fff, #fff),
+    linear-gradient(#fff, #fff),
+    linear-gradient(#fff, #fff);
+  background-size: 19px 2px, 19px 2px, 14px 2px, 14px 2px, 14px 2px, 14px 2px;
+  background-position: 0 0, 0 100%, right top, right bottom, left top, left bottom;
+  background-repeat: round no-repeat, round no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-clip: border-box;
+  background-origin: border-box;
+}
+.void-dashed-red {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-left: 2px solid #f00;
+  border-right: 2px solid #f00;
+  background-image:
+    linear-gradient(90deg, #f00 0, #f00 14px, transparent 14px, transparent 19px),
+    linear-gradient(90deg, #f00 0, #f00 14px, transparent 14px, transparent 19px),
+    linear-gradient(#f00, #f00),
+    linear-gradient(#f00, #f00),
+    linear-gradient(#f00, #f00),
+    linear-gradient(#f00, #f00);
+  background-size: 19px 2px, 19px 2px, 14px 2px, 14px 2px, 14px 2px, 14px 2px;
+  background-position: 0 0, 0 100%, right top, right bottom, left top, left bottom;
+  background-repeat: round no-repeat, round no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-clip: border-box;
+  background-origin: border-box;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, min(520px, calc((100% - var(--layout-space) - var(--layout-space) - var(--layout-space) - var(--layout-space)) / 3))));
+  grid-template-rows: repeat(2, minmax(min-content, 1fr));
+  --layout-space: clamp(1rem, 2.5vw, 2rem);
+  column-gap: 0;
+  row-gap: var(--layout-space);
+  width: 100%;
+  justify-content: space-evenly;
+  flex: 1;
+  min-height: min-content;
+  margin: 0;
+  padding: var(--layout-space) 0;
+}
+.profile-card {
+  width: 100%;
+  max-width: 520px;
+  min-width: 0;
+  min-height: min-content;
+  margin: 0;
+  padding: 0;
+  justify-self: center;
+}
+.profile-card > * {
+  height: 100%;
+}
+.profile-card-audio {
+  display: flex;
+  flex-direction: column;
+}
+.profile-card-audio > .audio-player {
+  height: auto;
+}
+.profile-banners {
+  flex: 1;
+  min-height: 6rem;
+  margin-top: var(--layout-space);
+  border: 2px solid #fff;
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: stretch;
+  align-items: center;
+  gap: 0.5rem;
+}
+.profile-banner {
+  display: block;
+  width: 88px;
+  height: 31px;
+}
+.profile-banner img {
+  display: block;
+  width: 88px;
+  height: 31px;
+}
+@media (min-width: 601px) {
+  .profile-card p {
+    margin: 0 1rem 1rem !important;
+  }
+  .profile-card:not(.profile-card-audio) .void-dashed > div:not(.section-title) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .profile-card:not(.profile-card-audio) .file-row {
+    flex: 1;
+  }
+}
+  @media (min-width: 601px) and (max-width: 1100px) {
+    .container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(min-content, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+  body {
+    height: auto;
+    overflow: visible;
+  }
+  .container {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 0.75rem;
+    justify-content: stretch;
+    padding: 0.75rem;
+  }
+  .void-header > div:nth-child(2) {
+    display: none;
+  }
+  .profile-card-audio {
+    order: 1;
+  }
+  .profile-card:not(.profile-card-audio) {
+    order: 0;
+  }
+  .profile-card > * {
+    height: auto;
+  }
+  .profile-banners {
+    flex: none;
+    margin-top: 0.75rem;
+  }
+}
+.void-btn {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  background-color: #000;
+  border: none;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  color: rgb(var(--c-body));
+  font-family: 'DMMono', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  letter-spacing: 0.05em;
+  transition: opacity 0.1s;
+}
+.void-btn:hover { opacity: 0.8; }
+.void-btn:active { opacity: 0.6; }
+
+.void-btn-voidtech {
+  font-family: 'VoidTech', monospace;
+  letter-spacing: 0.1em;
+  color: rgb(var(--c-heading));
+}
+.void-btn-red {
+  border-left: 2px solid #f00;
+  border-right: 2px solid #f00;
+  color: #f00;
+}
+
+.void-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  background-color: #000;
+  border: none;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  color: rgb(var(--c-body));
+  font-family: 'DMMono', monospace;
+  font-size: 1rem;
+  outline: none;
+  display: block;
+}
+
+.void-input-compact {
+  padding: 0.45rem 0.6rem;
+  background-color: #000;
+  border: 1px solid #555;
+  color: #fff;
+  font-family: 'DMMono', monospace;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.void-input-compact:focus { border-color: #fff; }
+
+/* ─── BORDERS DEMOS ──────────────────────────────────────── */
+.border-sample {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: rgb(var(--c-secondary));
+}
+
+/* ─── FILE ROW ───────────────────────────────────────────── */
+.file-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #222;
+  padding: 0.75rem 0;
+  gap: 0.75rem;
+  animation: vault-item 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.contact-link {
+  color: inherit;
+  text-decoration: none;
+}
+.contact-link:hover {
+  color: #fff;
+}
+.contact-link:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+.contact-link-email .file-row-name {
+  flex: 0 0 auto;
+}
+.contact-link-email .file-row-sizecc {
+  max-width: none;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.file-row:nth-child(1) { animation-delay: 0ms; }
+.file-row:nth-child(2) { animation-delay: 30ms; }
+.file-row:nth-child(3) { animation-delay: 60ms; }
+.file-row:nth-child(4) { animation-delay: 90ms; }
+.file-row-icon {
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  color: rgb(var(--c-secondary));
+  flex-shrink: 0;
+}
+.file-row-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.95rem; }
+.file-row-name.folder { font-family: 'DMMonoBold', 'DMMono', monospace; font-weight: bold; }
+.file-row-size { font-size: 0.8rem; color: rgb(var(--c-secondary)); flex-shrink: 0; }
+.file-row-sizecc {
+  min-width: 0;
+  max-width: 60%;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+.file-row-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.file-row-action { font-size: 0.7rem; color: rgb(var(--c-secondary)); cursor: pointer; padding: 0.2rem; }
+.file-row-action:hover { color: #fff; }
+
+/* ─── SLIDING PILL / SEGMENTED TOGGLE INDICATOR ──────────────
+   Documented from void-toolkit @ 0.1.0, commit 77c0c3f (2026-07-30).
+   Class names match the shipped implementation exactly — see
+   ui-patterns.md's "Sliding Pill / Segmented Toggle Indicator" section. */
+.mode-row,
+.format-row {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.format-pill {
+  /* position:relative WITHOUT a z-index — deliberate, see ui-patterns.md */
+  position: relative;
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  background-color: #000;
+  border: 1px solid #555;
+  color: rgb(var(--c-secondary));
+  text-decoration: none;
+  font-family: 'DMMono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.format-pill:hover,
+.format-pill[data-pill-active='true'] {
+  color: #fff;
+}
+.format-pill:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.format-pill:disabled:hover {
+  color: rgb(var(--c-secondary));
+}
+.format-pill-label {
+  position: relative;
+  z-index: 2;
+}
+.pill-indicator {
+  position: absolute;
+  left: 0;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  z-index: 1;
+  pointer-events: none;
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.15s;
+}
+
+/* ─── ANIMATIONS DEMO ────────────────────────────────────── */
+.anim-trigger {
+  padding: 0.6rem 1rem;
+  background-color: #000;
+  border: 2px solid #fff;
+  color: rgb(var(--c-body));
+  font-family: 'DMMono', monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: opacity 0.1s;
+}
+.anim-trigger:hover { opacity: 0.7; }
+
+.anim-box {
+  padding: 1rem 1.25rem;
+  background-color: #000;
+  border: 2px solid #fff;
+  font-family: 'DMMono', monospace;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+.anim-box.run-dialog   { animation: dialog-enter 0.22s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-box.run-vault    { animation: vault-item   0.18s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-box.run-sl       { animation: sl-box       0.30s cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: center; }
+.anim-box.run-ctx      { animation: ctx-menu-enter 0.12s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-box.run-blink    { animation: void-blink 0.26s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-box.run-pin      { animation: pin-enter-up 0.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── SLIDE DEMOS ────────────────────────────────────────── */
+.slide-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 70px;
+  margin-top: 0.75rem;
+  border: 1px solid #333;
+}
+.slide-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: #000;
+  border: 2px solid #fff;
+  font-size: 0.82rem;
+  color: rgb(var(--c-secondary));
+}
+.run-te  { animation: text-editor-enter    0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.run-mp  { animation: mobile-panel-enter   0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.run-ut  { animation: upload-toast-enter   0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.run-tb  { animation: tb-btn-enter         0.20s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.run-ql  { animation: quicklink-copy-enter 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.run-pce { animation: panel-content-enter  0.18s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ─── TOAST DEMO ─────────────────────────────────────────── */
+.toast-demo {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast-content {
+  background-color: #000;
+  border: 2px solid #fff;
+  color: rgb(var(--c-body));
+  padding: 0.75rem 1.5rem;
+  font-family: 'DMMono', monospace;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: auto;
+  animation: toast-enter 0.3s ease-out both;
+}
+
+/* ─── DIALOG DEMO ────────────────────────────────────────── */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.92);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.dialog-box {
+  border: 2px solid #fff;
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  background-color: #000;
+  animation: dialog-enter 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.dialog-box.destructive { border-color: #f00; }
+.dialog-title {
+  font-family: 'VoidTech', monospace;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.dialog-title.destructive { color: #f00; }
+.dialog-body {
+  font-family: 'DMMono', monospace;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.dialog-warning { color: #f00; font-size: 0.85rem; margin-bottom: 1.5rem; }
+.dialog-btns { display: flex; gap: 1rem; }
+
+/* ─── HEADER BAR ─────────────────────────────────────────── */
+.void-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background-color: #000;
+}
+.void-header-logo {
+  font-family: 'VoidTech', monospace;
+  font-size: clamp(0.85rem, 4.5vw, 2rem);
+  font-weight: 50;
+  letter-spacing: 0.1em;
+  color: rgb(var(--c-heading));
+}
+.storage-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+.storage-bar-track {
+  width: min(200px, 40vw);
+  height: 3px;
+  background-color: #333;
+  position: relative;
+}
+.storage-bar-fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background-color: #fff;
+  width: 42%;
+  transition: width 0.5s;
+}
+.storage-bar-labels {
+  display: flex;
+  gap: 0.75rem;
+  font-size: clamp(0.65rem, 2vw, 0.8rem);
+}
+.storage-label { color: rgb(var(--c-secondary)); }
+.storage-pct { font-weight: bold; }
+
+/* ─── RANGE SLIDER ───────────────────────────────────────── */
+.void-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: linear-gradient(to right, #fff 40%, #333 40%);
+  border: none;
+  border-radius: 0;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+}
+.void-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  background: #000;
+  border: 2px solid #fff;
+  border-radius: 0;
+  cursor: pointer;
+}
+.void-range::-moz-range-thumb {
+  width: 14px; height: 14px;
+  background: #000;
+  border: 2px solid #fff;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* ─── MISC ───────────────────────────────────────────────── */
+.accent-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.accent-chip {
+  padding: 0.3rem 0.75rem;
+  border: 2px solid;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+}
+.no-br { border-radius: 0; }
+code {
+  font-family: 'DMMono', monospace;
+  font-size: 0.8rem;
+  background: #080808;
+  padding: 0.15em 0.4em;
+  border: 1px solid #222;
+}
+pre {
+  font-family: 'DMMono', monospace;
+  font-size: 0.82rem;
+  background: #080808;
+  border: 1px solid #222;
+  padding: 1rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.make-believe {
+  position: fixed;
+  right: 0;
+  bottom: 7rem;
+  width: max-content;
+  transform-origin: right bottom;
+  transform: rotate(-90deg);
+  font-family: 'DMMono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  opacity: 0.3;
+  color: rgb(var(--c-body));
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+}
+
+/* Field Panel Reveal — see animations.md for the full writeup. Only the
+   inner content's enter/exit are real keyframes; the outer wrapper's
+   max-height/margin-bottom are inline-styled by JS (see toggleFieldReveal
+   below) since the collapse target is a *measured* height, not a fixed
+   guess. */
+@keyframes field-content-enter {
+  from { transform: translateY(-24px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes field-content-exit {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-12px); opacity: 0; }
+}
+.field-content-enter {
+  animation: field-content-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.field-content-exit {
+  animation: field-content-exit 0.22s cubic-bezier(0.64, 0, 0.78, 0) both;
+  pointer-events: none;
+}
+.field-reveal-demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid #222;
+  padding: 1.25rem;
+}
+</style>
+</head>
+<body>
+  <div class="void-header">
+    <div class="void-header-logo">VOID.OS {R}</div>
+    <div style="max-width:400px; margin-bottom:0.75rem;">
+    <div class="mode-row" id="mode-demo-row">
+      <div class="pill-indicator" id="mode-demo-indicator" style="opacity: 1; transform: translate(0px); width: 78px; height: 30px;"></div>
+      <button type="button" class="format-pill" onclick="setPillActive('mode-demo-row','mode-demo-indicator',this)" data-pill-active="true">
+        <span class="format-pill-label">NEW VERSION</span>
+      </button>
+      <a class="format-pill" href="https://minacore.github.io" onclick="setPillActive('mode-demo-row','mode-demo-indicator',this)">
+        <span class="format-pill-label">OLD VERSION</span>
+      </a>
+    </div>
+  </div>
+  </div>
+  <div class="container">
+  <div class="profile-card">
+    <div class="void-dashed" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="section-title">BASIC INFO</div> 
+        <p style="margin: 2.75rem; margin-top: 0; max-height: 100%; margin-bottom: 1rem; padding: 0.5rem 1.5rem;">
+NAME: Nastya Syrup<br>
+AGE: 16<br>
+BORN: 10.07.2010<br>
+PRONOUNS: she/they<br>
+LANGUAGES: UA, ru, EN<br>
+LOCATION: Kropyvnytskyi, Ukraine<br>
+EDUCATION: KIFK CNTU<br>
+MAJOR: Software Engineering / Programming<br>
+ABOUT: CS student & dev. I code, build custom tools, dig into low-level software, and experiment with hardware.</p>
+    </div>
+</div>
+<div class="profile-card">
+    <div class="void-dashed" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="section-title">DEVICES</div> 
+        <div style="padding: 0 0.75rem;">
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">Nothing Phone (3a) Lite</div>
+      <div class="file-row-size">main phone⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">ThinkPad E14 Gen 3</div>
+      <div class="file-row-size">main laptop ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">Lumia 950</div>
+      <div class="file-row-size">backup phone⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">iPhone 5</div>
+      <div class="file-row-size">phone for projects⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">iPAQ 114</div>
+      <div class="file-row-size">PDA for projects⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row" style="margin-bottom: 0.7rem;">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">Asus ZenFone Go</div>
+      <div class="file-row-size">random shitty phone⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+  </div>
+    </div>
+</div>
+<div class="profile-card">
+    <div class="void-dashed" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="section-title">STATS</div> 
+        <div style="padding: 0 0.75rem;">
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">OWNED PHONES:</div>
+      <div class="file-row-sizecc">11⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">MY UPTIME:</div>
+      <div class="file-row-sizecc" id="stat-my-uptime">—</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">GF UPTIME:</div>
+      <div class="file-row-sizecc" id="stat-gf-uptime">—</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">SHARED UPTIME:</div>
+      <div class="file-row-sizecc" id="stat-rel-uptime">—</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder" >DAYS UNTIL MY BD:</div>
+      <div class="file-row-sizecc" id="stat-to-bd">—</div>
+    </div>
+    <div class="file-row" style="margin-bottom: 0.7rem;">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder" >DAYS SINCE MY BD:</div>
+      <div class="file-row-sizecc" id="stat-since-bd">—</div>
+    </div>
+  </div>
+    </div>
+</div>
+<div class="profile-card profile-card-audio">
+    <div class="audio-player" style="border:2px solid #FFF; font-family:DMMono,monospace;">
+      <!-- Window chrome header -->
+      <div style="padding:0.5rem 0.85rem; font-size:0.75rem; color:rgb(255, 255, 255); letter-spacing:0.07em;">
+        AUDIO FILE
+      </div>
+      <div style="border-top:2px solid #FFF;"></div>
+      <!-- Content area -->
+      <div style="padding:1rem 0.85rem; display:flex; flex-direction:column; gap:0.5rem;">
+        <!-- Fake waveform -->
+        <div style="display:flex; align-items:center; gap:3px; height:32px;">
+          <div style="width:3px; height:60%; background:#444; flex-shrink:0;"></div>
+          <div style="width:3px; height:100%; background:#666; flex-shrink:0;"></div>
+          <div style="width:3px; height:40%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:80%; background:#777; flex-shrink:0;"></div>
+          <div style="width:3px; height:55%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:90%; background:#888; flex-shrink:0;"></div>
+          <div style="width:3px; height:35%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:70%; background:#666; flex-shrink:0;"></div>
+          <div style="width:3px; height:50%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:85%; background:#777; flex-shrink:0;"></div>
+          <div style="width:3px; height:45%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:60%; background:#666; flex-shrink:0;"></div>
+          <div style="width:3px; height:75%; background:#555; flex-shrink:0;"></div>
+          <div style="width:3px; height:40%; background:#444; flex-shrink:0;"></div>
+          <div style="width:3px; height:65%; background:#666; flex-shrink:0;"></div>
+          <div style="width:3px; height:55%; background:#555; flex-shrink:0;"></div>
+        </div>
+        <!-- Fake progress bar -->
+        <div style="height:3px; background:#333; position:relative; width:100%;">
+          <div style="position:absolute; left:0; top:0; bottom:0; width:38%; background:#fff;"></div>
+          <div style="position:absolute; left:38%; top:50%; transform:translateY(-50%); width:8px; height:8px; background:#fff; border-radius:50%;"></div>
+        </div>
+        <!-- Fake time row -->
+        <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:rgb(var(--c-secondary)); opacity:0.6;">
+          <span>1:24</span><span>3:47</span>
+        </div>
+      </div>
+      <!-- Stats bar -->
+      <div style="border-top:2px solid #FFF; padding:0.5rem 0.85rem; display:flex; gap:1.25rem; font-size:0.72rem;">
+        <div style="display:flex; gap:0.35rem;">
+          <span id="track-title" style="color:rgb(255, 255, 255);">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-banners" aria-label="88 by 31 banners">
+        <img src="88x31/button471.png" alt="uc">
+      <a class="profile-banner" href="https://iwddie.whenill.cyou" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/den4iklovelinux.png" alt="den4iklovelinux">
+      </a>
+      <a class="profile-banner" href="https://anarchistsanctuary.com/" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/AS.gif" alt="as">
+      </a>
+      <a class="profile-banner" href="https://ya-ebal.mom" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/Frame 26.png" alt="den4iklovelinux">
+      </a>
+        <img src="88x31/fauux.gif" alt="wired">
+      <a class="profile-banner" href="https://github.com/ytdl-org/youtube-dl" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/button207.gif" alt="button207">
+      </a>
+        <img src="88x31/tumblr_5041ff06259c0a188c4b1ae92fa74abf_999418a6_100.gif" alt="9994">
+        <img src="88x31/tumblr_85ac6f0ba61d8bad27d30e0bc4ae2fab_56c038e1_100.webp" alt="56c0">
+        <img src="88x31/tumblr_8f1817e725e8ef8e5bd345a02a3f8ca2_db0986f1_100.jpg" alt="db09">
+        <img src="88x31/tumblr_8f6b91a4de2fad69d17e3ee8ea507148_d7161834_100.jpg" alt="d716">
+        <img src="88x31/gestures.png" alt="gestures">
+      <a class="profile-banner" href="https://altstore.io/" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/altstore.png" alt="altstore">
+      </a>
+      <a class="profile-banner" href="https://1.1.1.1" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/1111.png" alt="1111">
+      </a>
+        <img src="88x31/dnd.png" alt="dnd">
+        <img src="88x31/lowpower.png" alt="lowpower">
+      <a class="profile-banner" href="https://firefox.com" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/firefoxnow.gif" alt="firefox">
+      </a>
+        <img src="88x31/e2vial-88x31.gif" alt="estrogen">
+      <a class="profile-banner" href="https://debian.org" target="_blank" rel="noopener noreferrer">
+        <img src="88x31/powered-by-debian.gif" alt="debian">
+      </a>
+        <img src="88x31/penguins.gif" alt="penguins">
+        <img src="88x31/bestvw.gif" alt="bestvw">
+    </div>
+  </div>
+<div class="profile-card">
+    <div class="void-dashed" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="section-title">PROJECTS</div> 
+        <div style="padding: 0 0.75rem;">
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">android_kernel_ipaq114</div>
+      <div class="file-row-size">Android kernel for iPAQ 114⁢ ⁢ ⁢ ⁢ ⁢ </div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">VOID.OS</div>
+      <div class="file-row-size">custom ROM⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">KGram!</div>
+      <div class="file-row-size">Telegram client for WM6⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">ShIT!</div>
+      <div class="file-row-size">Rufus clone for Linux⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">YAiKO</div>
+      <div class="file-row-size">phone bypass tool⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+    <div class="file-row" style="margin-bottom: 0.7rem;">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">project__nothing</div>
+      <div class="file-row-size">???⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </div>
+  </div>
+    </div>
+</div>
+<div class="profile-card">
+    <div class="void-dashed" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="section-title">CONTACTS</div> 
+        <div style="padding: 0 0.75rem;">
+    <a class="file-row contact-link" href="https://t.me/shawty70" target="_blank">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">Telegram</div>
+      <div class="file-row-sizecc">@shawty70⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </a>
+    <a class="file-row contact-link" href="https://t.me/ipaq114" target="_blank">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">Telegram channel</div>
+      <div class="file-row-sizecc">@ipaq114 ⁢ ⁢ ⁢ ⁢</div>
+    </a>
+    <a class="file-row contact-link" href="https://github.com/MinaCore" target="_blank">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">GitHub</div>
+      <div class="file-row-sizecc">@MinaCore⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </a>
+    <a class="file-row contact-link contact-link-email" href="mailto:kangeldesu@proton.me">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">e-mail</div>
+      <div class="file-row-sizecc">kangeldesu@proton.me⁢ ⁢ ⁢ ⁢ ⁢ </div>
+    </a>
+    <a class="file-row contact-link" href="https://tiktok.com/@minacore17171" target="_blank">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">TikTok</div>
+      <div class="file-row-sizecc">@minacore17171⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </a>
+    <a class="file-row contact-link" href="https://4pda.to/forum/index.php?showuser=10238137" target="_blank" style="margin-bottom: 0.7rem;">
+      <div class="file-row-icon">></div>
+      <div class="file-row-name folder">4PDA</div>
+      <div class="file-row-sizecc">hikari.⁢ ⁢ ⁢ ⁢ ⁢</div>
+    </a>
+  </div>
+    </div>
+</div>
+</div>
+  <script>
+const STAT_DATES = {
+  // Use YYYY-MM-DD dates. myBirthday also drives the birthday countdown.
+  myBirthday: '2010-07-10',
+  gfUptimeStart: '2011-06-28',
+  sharedUptimeStart: '2026-10-17'
+};
+
+const TRACK_API = {
+  url: '',
+  titleField: 'title',
+  refreshIntervalMs: 30000
+};
+
+async function updateTrackTitle() {
+  if (!TRACK_API.url) return;
+
+  const response = await fetch(TRACK_API.url, { cache: 'no-store' });
+  if (!response.ok) {
+    throw new Error('Track API request failed with status ' + response.status);
+  }
+
+  const data = await response.json();
+  const title = data[TRACK_API.titleField];
+  if (typeof title !== 'string' || !title.trim()) {
+    throw new TypeError('Track API response must include a non-empty "' + TRACK_API.titleField + '" string.');
+  }
+
+  document.getElementById('track-title').textContent = title.trim();
+}
+
+function refreshTrackTitle() {
+  updateTrackTitle().catch((error) => {
+    console.error('Unable to update track title:', error);
+  });
+}
+
+function parseStatDate(dateString) {
+  if (dateString === null) return null;
+  if (typeof dateString !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    throw new TypeError('Stat dates must use YYYY-MM-DD format.');
+  }
+
+  const [year, month, day] = dateString.split('-').map(Number);
+  const timestamp = Date.UTC(year, month - 1, day);
+  const parsed = new Date(timestamp);
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    throw new RangeError('Stat date is not a valid calendar date: ' + dateString);
+  }
+  return timestamp;
+}
+
+function getTodayTimestamp() {
+  const today = new Date();
+  return Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
+function formatDayCount(days) {
+  return days + (days === 1 ? ' day⁢ ⁢ ⁢ ⁢ ⁢' : ' days⁢ ⁢ ⁢ ⁢ ⁢');
+}
+
+function elapsedDaysSince(dateString, todayTimestamp) {
+  const startTimestamp = parseStatDate(dateString);
+  if (startTimestamp === null) return '—';
+  if (startTimestamp > todayTimestamp) {
+    throw new RangeError('An uptime start date cannot be in the future: ' + dateString);
+  }
+  return formatDayCount((todayTimestamp - startTimestamp) / 86400000);
+}
+
+function getBirthdayDayCounts(dateString, todayTimestamp) {
+  const birthdayTimestamp = parseStatDate(dateString);
+  if (birthdayTimestamp === null) return { until: '—', since: '—' };
+
+  const birthday = new Date(birthdayTimestamp);
+  const year = new Date(todayTimestamp).getUTCFullYear();
+  const anniversary = (anniversaryYear) =>
+    Date.UTC(anniversaryYear, birthday.getUTCMonth(), birthday.getUTCDate());
+
+  const thisYearBirthday = anniversary(year);
+  const previousBirthday = todayTimestamp < thisYearBirthday
+    ? anniversary(year - 1)
+    : thisYearBirthday;
+  const nextBirthday = todayTimestamp < thisYearBirthday
+    ? thisYearBirthday
+    : anniversary(year + 1);
+
+  return {
+    until: formatDayCount((nextBirthday - todayTimestamp) / 86400000),
+    since: formatDayCount((todayTimestamp - previousBirthday) / 86400000)
+  };
+}
+
+function updateDateStats() {
+  const todayTimestamp = getTodayTimestamp();
+  const birthdayCounts = getBirthdayDayCounts(STAT_DATES.myBirthday, todayTimestamp);
+  document.getElementById('stat-my-uptime').textContent =
+    elapsedDaysSince(STAT_DATES.myBirthday, todayTimestamp);
+  document.getElementById('stat-gf-uptime').textContent =
+    elapsedDaysSince(STAT_DATES.gfUptimeStart, todayTimestamp);
+  document.getElementById('stat-rel-uptime').textContent =
+    elapsedDaysSince(STAT_DATES.sharedUptimeStart, todayTimestamp);
+  document.getElementById('stat-to-bd').textContent = birthdayCounts.until;
+  document.getElementById('stat-since-bd').textContent = birthdayCounts.since;
+}
+
+// Sliding pill/segmented toggle indicator — vanilla-JS port of
+// void-toolkit's useSlidingIndicator React hook (client/src/lib/
+// useSlidingIndicator.ts). Same measurement approach: read the active
+// pill's real offsetLeft/offsetTop/offsetWidth/offsetHeight (never a CSS
+// percentage — see ui-patterns.md for why) and apply as inline style on
+// the shared indicator element, which then CSS-transitions on its own.
+function updatePillIndicator(rowId, indicatorId) {
+  const row = document.getElementById(rowId);
+  const indicator = document.getElementById(indicatorId);
+  const active = row.querySelector('[data-pill-active="true"]');
+  if (!active) {
+    indicator.style.opacity = '0';
+    return;
+  }
+  indicator.style.opacity = '1';
+  indicator.style.transform = 'translate(' + active.offsetLeft + 'px, ' + active.offsetTop + 'px)';
+  indicator.style.width = active.offsetWidth + 'px';
+  indicator.style.height = active.offsetHeight + 'px';
+}
+
+// Field Panel Reveal — see animations.md / ui-patterns.md's "Field Panel
+// Reveal Lifecycle" for the full writeup. This is the same three-piece
+// state machine (visible / exiting / collapseHeight) described there,
+// just as plain variables + direct DOM writes instead of React state,
+// since this demo page has no framework.
+let fieldRevealVisible = false;
+let fieldRevealExiting = false;
+
+function fieldRevealMarkup() {
+  return (
+    '<div class="field-content-enter" style="border:1px solid #333; padding:0.9rem 1rem;">' +
+    '<div style="font-family:\'DMMono\',monospace; font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:rgb(var(--c-secondary)); margin-bottom:0.5rem;">RAW/PCM OUTPUT PARAMETERS</div>' +
+    '<div style="font-size:0.82rem; color:rgb(var(--c-secondary));">sample rate · channels · sample format — content height varies, which is exactly why this is measured, not a fixed max-height.</div>' +
+    '</div>'
+  );
+}
+
+function toggleFieldReveal() {
+  const wrap = document.getElementById('field-reveal-wrap');
+
+  if (!fieldRevealVisible) {
+    // Entering: no cap needed at all — mounting at natural height already
+    // pushes the marker below down in one frame; the content's own
+    // .field-content-enter is the only animation needed.
+    fieldRevealVisible = true;
+    fieldRevealExiting = false;
+    wrap.style.maxHeight = '';
+    wrap.style.marginBottom = '';
+    wrap.style.overflow = '';
+    wrap.style.transition = '';
+    wrap.innerHTML = fieldRevealMarkup();
+    return;
+  }
+
+  if (fieldRevealExiting) return; // already closing, ignore a second click
+
+  // Exiting: measure real height first (same frame — no visible change
+  // yet, since it matches the current natural height), swap the content to
+  // its exit animation, then on the *next* frame drop both max-height and
+  // the gap-cancelling margin-bottom to their collapsed values so the
+  // transition actually has something to animate between.
+  fieldRevealExiting = true;
+  const fullHeight = wrap.getBoundingClientRect().height;
+  wrap.style.overflow = 'hidden';
+  wrap.style.transition = 'max-height 220ms ease, margin-bottom 220ms ease';
+  wrap.style.maxHeight = fullHeight + 'px';
+  wrap.style.marginBottom = '0px';
+  const contentEl = wrap.querySelector('div');
+  if (contentEl) {
+    contentEl.classList.remove('field-content-enter');
+    contentEl.classList.add('field-content-exit');
+  }
+
+  requestAnimationFrame(() => {
+    wrap.style.maxHeight = '0px';
+    // Cancels .field-reveal-demo-stack's own `gap: 1.5rem` — without this,
+    // the gap keeps reserving its 1.5rem around this wrapper even once its
+    // content has visually collapsed to 0 height, and only releases it the
+    // instant the node is actually cleared below — which reads as a sharp
+    // extra jump right after the smooth part of the animation appears to
+    // have finished. Transitioning this in sync with max-height means
+    // that space is already reclaimed by the time there's nothing left.
+    wrap.style.marginBottom = '-1.5rem';
+  });
+
+  const onTransitionEnd = (event) => {
+    if (event.propertyName !== 'max-height') return;
+    wrap.removeEventListener('transitionend', onTransitionEnd);
+    // Deliberately *not* resetting max-height/margin-bottom/overflow here —
+    // only clearing the content. Both properties finish their own 220ms
+    // transition independently and don't necessarily fire transitionend in
+    // the same tick even with identical durations; resetting margin-bottom
+    // back to its default the instant max-height's event fires can catch
+    // margin mid-flight and snap it the rest of the way, which is its own
+    // small visible jump. Leaving both pinned at their fully-collapsed
+    // values (0px / -1.5rem) is visually identical to "gone" — nothing to
+    // reset until the next entrance, which already sets fresh values.
+    wrap.innerHTML = '';
+    fieldRevealVisible = false;
+    fieldRevealExiting = false;
+  };
+  wrap.addEventListener('transitionend', onTransitionEnd);
+}
+
+function setPillActive(rowId, indicatorId, pillEl) {
+  if (pillEl.disabled) return;
+  const row = document.getElementById(rowId);
+  row.querySelectorAll('.format-pill').forEach((p) => p.removeAttribute('data-pill-active'));
+  pillEl.setAttribute('data-pill-active', 'true');
+  updatePillIndicator(rowId, indicatorId);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  updateDateStats();
+  if (TRACK_API.url) {
+    refreshTrackTitle();
+    window.setInterval(refreshTrackTitle, TRACK_API.refreshIntervalMs);
+  }
+  updatePillIndicator('mode-demo-row', 'mode-demo-indicator');
+  updatePillIndicator('format-demo-row', 'format-demo-indicator');
+});
+window.addEventListener('resize', () => {
+  updatePillIndicator('mode-demo-row', 'mode-demo-indicator');
+  updatePillIndicator('format-demo-row', 'format-demo-indicator');
+});
+
+
+</script>
+</body>
+</html>

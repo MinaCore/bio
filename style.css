@@ -1,0 +1,38 @@
+@font-face {
+  font-family: void; /* set name */
+  src: url(void-tech.ttf); /* url of the font */
+}
+.void-header {
+  font-family: 'void', monospace;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background-color: #000;
+  font-size: 2rem;
+}
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'DMMono', monospace;
+  font-size: 1rem;
+  color: #fff;
+  line-height: 1.5;
+  background-color: #000;
+}
+:root {
+  --c-heading: 255, 255, 255;
+  --c-body: 255, 255, 255;
+  --c-secondary: 128, 128, 128;
+  --c-border-root: 255, 255, 255;
+  --c-border-inner: 130, 130, 130;
+  --c-border-btn: 255, 255, 255;
+  --c-border-window: 51, 51, 51;
+  --c-separator: 255, 255, 255;
+}
